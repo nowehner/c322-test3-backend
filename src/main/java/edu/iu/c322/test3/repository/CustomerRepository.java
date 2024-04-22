@@ -1,7 +1,10 @@
 package edu.iu.c322.test3.repository;
 
+import edu.iu.c322.test3.model.Customer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 import java.io.File;
 import java.io.IOException;
@@ -12,12 +15,14 @@ import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.List;
 
+@Repository
 public class CustomerRepository {
     private static final Logger LOG =
             LoggerFactory.getLogger(CustomerRepository.class);
 
     private static final String DATABASE_NAME = "quizzes/customers.txt";
     private static final String NEW_LINE = System.lineSeparator();
+
 
     public CustomerRepository() {
         File file = new File(DATABASE_NAME);
@@ -29,26 +34,26 @@ public class CustomerRepository {
         }
     }
 
-    @Override
-    public boolean save(Customer customer) throws IOException {
+
+    public Customer save(Customer customer) throws IOException {
         Customer x = findByUsername(customer.getUsername());
         if(x == null) {
             Path path = Paths.get(DATABASE_NAME);
-            String data = String.format("%1$s,%2$s,%3s",
+            String data = String.format("%1$s,%2$s,%3$s",
                     customer.getUsername().trim(),
-                    customer.getUsername().trim(),
-                    customer.getEmail.trim());
+                    customer.getPassword().trim(),
+                    customer.getEmail().trim());
             data += NEW_LINE;
             Files.write(path,
                     data.getBytes(StandardCharsets.UTF_8),
                     StandardOpenOption.CREATE,
                     StandardOpenOption.APPEND);
-            return true;
+
         }
-        return false;
+        return x;
     }
 
-    @Override
+
     public Customer findByUsername(String username) throws IOException {
         Path path = Paths.get(DATABASE_NAME);
         List<String> data = Files.readAllLines(path);
