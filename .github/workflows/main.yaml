@@ -38,5 +38,5 @@ jobs:
         run: |
           docker login --username nowehner --password ${{secrets.ACCESS_TOKEN}} ghcr.io
           docker build -t ghcr.io/nowehner/test3:latest --file Dockerfile .  
-          docker push ghcr.io/nowehner/test3S:latest 
+          docker push ghcr.io/nowehner/test3:latest 
 
